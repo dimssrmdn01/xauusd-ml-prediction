@@ -38,5 +38,26 @@ Key Features:
 - Backtesting Engine – Simulate real trading with realistic transaction costs
 - Performance Metrics – Sharpe ratio, max drawdown, win rate, profit factor
 
+## Project Structure
+
+gold-price-forecast-ml/
+├── data/
+│   ├── raw/                 # Data historis mentah XAUUSD (misal dari OANDA/MT4)
+│   ├── processed/           # Data bersih yang sudah dinormalisasi dan ditambah fitur teknikal
+│   └── external/            # Data pendukung (misal: kalender ekonomi, data indeks DXY)
+├── notebooks/               # Jupyter/R notebooks untuk EDA dan eksperimen awal
+│   ├── 01_data_exploration.ipynb
+│   └── 02_feature_engineering.ipynb
+├── src/                     # Source code utama (Pipeline)
+│   ├── __init__.py
+│   ├── data_loader.py       # Script penarikan data via API broker
+│   ├── features.py          # Script pembuatan fitur prediktif (RSI, MACD, Price Action)
+│   ├── train.py             # Script pelatihan model (XGBoost, dll)
+│   └── evaluate.py          # Evaluasi metrik model (MSE, Cross-Validation, Sharpe Ratio)
+├── models/                  # File model prediktif yang sudah dilatih dan divalidasi (misal: .pkl / .rds)
+├── requirements.txt         # Daftar dependensi library (pandas, scikit-learn, xgboost, dll)
+├── config.yaml              # Konfigurasi parameter (timeframe 5m/1h, hyperparameter model)
+└── README.md                # Dokumentasi utama proyek
+
 
 
