@@ -40,6 +40,7 @@ Key Features:
 
 ## Project Structure
 
+```text
 gold-price-forecast-ml/
 ├── data/
 │   ├── raw/                 # Data historis mentah XAUUSD (misal dari OANDA/MT4)
@@ -58,6 +59,6 @@ gold-price-forecast-ml/
 ├── requirements.txt         # Daftar dependensi library (pandas, scikit-learn, xgboost, dll)
 ├── config.yaml              # Konfigurasi parameter (timeframe 5m/1h, hyperparameter model)
 └── README.md                # Dokumentasi utama proyek
-
+```
 
 
