@@ -40,36 +40,35 @@ Key Features:
 
 ---
 
-## Project Structure
 xauusd-price-prediction/
 │
-├── data/ # Raw & processed datasets
-│ ├── raw/ # Original downloaded data
-│ └── processed/ # Cleaned & feature-engineered data
+├── data/                           # Raw & processed datasets
+│   ├── raw/                        # Original downloaded data
+│   └── processed/                  # Cleaned & feature-engineered data
 │
-├── notebooks/ # Jupyter notebooks for EDA & experimentation
-│ ├── 01_EDA.ipynb # Exploratory Data Analysis
-│ ├── 02_Feature_Engineering.ipynb
-│ └── 03_Model_Training.ipynb
+├── notebooks/                      # Jupyter notebooks for EDA & experimentation
+│   ├── 01_EDA.ipynb                # Exploratory Data Analysis
+│   ├── 02_Feature_Engineering.ipynb
+│   └── 03_Model_Training.ipynb
 │
-├── src/ # Production-ready source code
-│ ├── data_pipeline/ # Data fetching & preprocessing
-│ ├── features/ # Technical indicators
-│ ├── models/ # ML model definitions
-│ └── backtest/ # Trading simulation engine
+├── src/                            # Production-ready source code
+│   ├── data_pipeline/              # Data fetching & preprocessing
+│   ├── features/                   # Technical indicators
+│   ├── models/                     # ML model definitions
+│   └── backtest/                   # Trading simulation engine
 │
-├── models/ # Saved trained models
-│ ├── xgboost_model.pkl
-│ └── lstm_weights.h5
+├── models/                         # Saved trained models
+│   ├── xgboost_model.pkl
+│   └── lstm_weights.h5
 │
-├── results/ # Output & visualizations
-│ ├── plots/ # Performance charts
-│ ├── logs/ # Training logs
-│ └── predictions.csv # Model predictions
+├── results/                        # Output & visualizations
+│   ├── plots/                      # Performance charts
+│   ├── logs/                       # Training logs
+│   └── predictions.csv             # Model predictions
 │
-├── requirements.txt # Python dependencies
-├── .gitignore # Git ignore rules
-└── README.md # This file
+├── requirements.txt                # Python dependencies
+├── .gitignore                      # Git ignore rules
+└── README.md                       # This file
 
 Disclaimer
 This project is for educational and research purposes only.
