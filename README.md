@@ -61,4 +61,44 @@ gold-price-forecast-ml/
 └── README.md                # Dokumentasi utama proyek
 ```
 
+## Quick Start
+
+Ikuti langkah-langkah di bawah ini untuk menjalankan *machine learning pipeline* prediksi XAUUSD di mesin lokal Anda.
+
+### 1. Clone Repository
+Unduh *source code* ke dalam komputer Anda:
+```bash
+git clone [https://github.com/username_kamu/gold-price-forecast-ml.git](https://github.com/username_kamu/gold-price-forecast-ml.git)
+cd gold-price-forecast-ml
+```
+
+### 2. Environment Setup
+Sangat disarankan untuk menggunakan *virtual environment* agar dependensi proyek tidak bentrok.
+```bash
+# Membuat virtual environment
+python -m venv venv
+
+# Aktivasi environment (Pilih salah satu)
+source venv/bin/activate  # Untuk Linux/Mac
+venv\Scripts\activate     # Untuk Windows
+
+# Install library yang dibutuhkan
+pip install -r requirements.txt
+```
+
+### 3. Run the Pipeline
+Setelah *environment* siap, Anda bisa menjalankan *pipeline end-to-end* secara berurutan melalui skrip berikut:
+```bash
+# 1. Menarik data historis XAUUSD
+python src/data_loader.py
+
+# 2. Membersihkan data dan mengekstraksi fitur (RSI, MACD, dll)
+python src/features.py
+
+# 3. Melatih model XGBoost dan menyimpan artefak model terbaik
+python src/train.py
+
+# 4. (Opsional) Melakukan evaluasi metrik dan visualisasi hasil
+python src/evaluate.py
+```
 
