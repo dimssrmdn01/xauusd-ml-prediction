@@ -1,6 +1,6 @@
 streamlit
 pandas
 numpy
-yfinance
+yfinance==0.2.36
 matplotlib
 seaborn
