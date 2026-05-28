@@ -6,14 +6,14 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime, timedelta
 
-# Pengaturan layout terminal profesional
+#Pengaturan layout terminal 
 st.set_page_config(
     page_title="Institutional Gold Quant Engine", 
     layout="wide", 
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS untuk nuansa Bloomberg Terminal Dark Mode
+#Custom CSS untuk nuansa Bloomberg 
 st.markdown("""
     <style>
     .reportview-container { background: #0e1117; }
@@ -76,7 +76,7 @@ try:
         df['MA_Fast'] = df['Close'].rolling(window=short_window).mean()
         df['MA_Slow'] = df['Close'].rolling(window=long_window).mean()
         
-        # Average True Range (ATR)
+        #Average True Range (ATR)
         df['H-L'] = df['High'] - df['Low']
         df['H-PC'] = abs(df['High'] - df['Close'].shift(1))
         df['L-PC'] = abs(df['Low'] - df['Close'].shift(1))
@@ -85,7 +85,7 @@ try:
         
         df['Log_Return'] = np.log(df['Close'] / df['Close'].shift(1))
         
-        # Filter data
+        #Filter data
         df_filtered = df.tail(backtest_days).copy()
         
         # -------------------------------------------------------------------
@@ -94,19 +94,19 @@ try:
         df_filtered['Signal'] = np.where(df_filtered['MA_Fast'] > df_filtered['MA_Slow'], 1, -1)
         df_filtered['Strategy_Return'] = df_filtered['Log_Return'] * df_filtered['Signal'].shift(1)
         
-        # Deteksi Titik Eksekusi Order (Sinyal Berubah)
+        #Deteksi Titik Eksekusi Order (Sinyal Berubah)
         df_filtered['Position_Changes'] = df_filtered['Signal'].diff()
         df_filtered['Buy_Markers'] = np.where(df_filtered['Position_Changes'] == 2, df_filtered['Close'], np.nan)
         df_filtered['Sell_Markers'] = np.where(df_filtered['Position_Changes'] == -2, df_filtered['Close'], np.nan)
         
-        # Kalkulasi Finansial Lanjutan
+        #Kalkulasi Finansial Lanjutan
         latest_price = float(df_filtered['Close'].iloc[-1])
         current_atr = float(df_filtered['ATR'].iloc[-1])
         
         asset_cum_return = (np.exp(df_filtered['Log_Return'].sum()) - 1) * 100
         strategy_cum_return = (np.exp(df_filtered['Strategy_Return'].sum()) - 1) * 100
         
-        # UPGRADE: Kalkulasi Maximum Drawdown (Penurunan Modal Terparah)
+        #Kalkulasi Maximum Drawdown (Penurunan Modal Terparah)
         strategy_cum_wealth = np.exp(df_filtered['Strategy_Return'].cumsum())
         peak = strategy_cum_wealth.cummax()
         drawdown = (strategy_cum_wealth - peak) / peak
@@ -116,9 +116,9 @@ try:
         win_trades = df_filtered[df_filtered['Strategy_Return'] > 0].shape[0]
         win_rate = (win_trades / df_filtered.shape[0]) * 100
 
-        # UPGRADE: Dynamic Position Sizing Calculator (Simulator Manajemen Risiko)
+        #Dynamic Position Sizing Calculator (Simulator Manajemen Risiko)
         cash_risk = account_capital * (risk_percentage / 100)
-        stop_loss_distance = current_atr * 2 # Standar industri: Stop Loss berjarak 2x nilai ATR
+        stop_loss_distance = current_atr * 2 
         simulated_position_size = cash_risk / stop_loss_distance if stop_loss_distance > 0 else 0.0
 
         # -------------------------------------------------------------------
@@ -154,12 +154,12 @@ try:
             fig.patch.set_facecolor('#0e1117')
             ax1.set_facecolor('#161b22')
             
-            # Plot Garis Harga dan Moving Average
+            #Plot Garis Harga dan Moving Average
             ax1.plot(df_filtered.index, df_filtered['Close'], label='XAUUSD Spot Price', color='#D4AF37', linewidth=2, alpha=0.9)
             ax1.plot(df_filtered.index, df_filtered['MA_Fast'], label=f'Fast MA ({short_window}D)', color='#00D2FF', linestyle='--', linewidth=1.2)
             ax1.plot(df_filtered.index, df_filtered['MA_Slow'], label=f'Slow MA ({long_window}D)', color='#FF3B30', linestyle='--', linewidth=1.2)
             
-            # UPGRADE: Menempelkan Sinyal Buy (Segitiga Hijau Ke atas) dan Sell (Segitiga Merah Ke bawah)
+            #Menempelkan Sinyal Buy 
             ax1.scatter(df_filtered.index, df_filtered['Buy_Markers'], label='EXECUTE LONG (BUY)', color='#34C759', marker='^', s=150, zorder=5)
             ax1.scatter(df_filtered.index, df_filtered['Sell_Markers'], label='EXECUTE SHORT (SELL)', color='#FF3B30', marker='v', s=150, zorder=5)
             
