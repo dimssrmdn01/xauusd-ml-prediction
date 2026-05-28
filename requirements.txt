@@ -98,3 +98,9 @@ wcwidth==0.7.0
 websockets==16.0
 xgboost==3.2.0
 yfinance==1.4.0
+streamlit
+pandas
+numpy
+yfinance
+matplotlib
+seaborn
