@@ -61,7 +61,7 @@ def fetch_institutional_data(symbol, days):
     start_date = end_date - timedelta(days=days + 100)
     df = yf.download(symbol, start=start_date, end=end_date)
     
-    #Bersihkan MultiIndex jika kolom bertingkat
+    
     if isinstance(df.columns, pd.MultiIndex):
         df.columns = df.columns.droplevel(1)
         
