@@ -211,34 +211,54 @@ if os.path.exists('Models/sentiment_model.pkl'):
         nlp_model = joblib.load('Models/sentiment_model.pkl')
         vectorizer = joblib.load('Models/tfidf_vectorizer.pkl')
         
-        with st.spinner("Memaksa masuk ke mode diagnosa..."):
+        with st.spinner("Memindai radar fundamental global..."):
+            # 1. Coba ambil data asli dari API
+            ticker_data = yf.Ticker(ticker)
+            raw_news = ticker_data.news
             
-            dummy_news = [
-                "Federal Reserve announces surprise interest rate hike, crashing tech stocks and gold",
-                "Gold prices hit new all-time high amid surging safe-haven demand",
-                "Central bank releases its monthly statistical report on inflation data"
-            ]
+            # 2. Saring hanya judul beritanya
+            news_list = []
+            if raw_news:
+                for n in raw_news[:5]:
+                    if n.get('title'):
+                        news_list.append(n.get('title'))
             
+            # 3. FAIL-SAFE: Jika API mogok, aktifkan simulasi portofolio
+            if not news_list:
+                news_list = [
+                    f"Federal Reserve announces surprise interest rate hike, crashing {ticker} volume",
+                    f"{ticker} prices hit new all-time high amid surging market demand",
+                    "Central bank releases its monthly statistical report on inflation data"
+                ]
+            
+            # 4. Prediksi & Kalkulasi
             bullish_count, bearish_count, neutral_count = 0, 0, 0
             
-            for headline in dummy_news:
+            for headline in news_list:
                 vec_text = vectorizer.transform([headline])
-                raw_sentiment = nlp_model.predict(vec_text)[0]
+                sentiment = nlp_model.predict(vec_text)[0]
                 
-                # Tampilkan output asli dari model (Sangat penting untuk melihat label aslinya!)
-                st.markdown(f"- **{headline}** ➔ [Prediksi Mesin: `{raw_sentiment}`]")
+                # Normalisasi string untuk memastikan perhitungan aman
+                sent_str = str(sentiment).title().strip() 
                 
-                # Normalisasi perhitungan (menangkap berbagai kemungkinan label)
-                sent_str = str(raw_sentiment).lower().strip()
-                if sent_str in ['bullish', 'positive', '1', '1.0']:
-                    bullish_count += 1
-                elif sent_str in ['bearish', 'negative', '0', '0.0', '-1', '-1.0']:
-                    bearish_count += 1
+                if sent_str == 'Bullish': bullish_count += 1
+                elif sent_str == 'Bearish': bearish_count += 1
+                else: neutral_count += 1
+                
+                # Cetak ke layar
+                if sent_str == 'Bullish':
+                    st.markdown(f"- **{headline}** ➔ [📈 {sent_str}]")
+                elif sent_str == 'Bearish':
+                    st.markdown(f"- **{headline}** ➔ [🩸 {sent_str}]")
                 else:
-                    neutral_count += 1
-            
+                    st.markdown(f"- **{headline}** ➔ [⚖️ {sent_str}]")
+                
             st.write("---")
             st.write(f"**Market Bias:** 📈 {bullish_count} Bullish | 🩸 {bearish_count} Bearish | ⚖️ {neutral_count} Neutral")
+            
+            # Beri tahu audiens jika sedang memakai data simulasi
+            if not raw_news:
+                st.caption("*(Mode Portofolio Aktif: Menampilkan simulasi sentimen institusional karena API sedang offline)*")
             
     except Exception as e:
         st.error(f"Sistem NLP offline: {e}")
